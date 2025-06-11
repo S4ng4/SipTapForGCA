@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SipTap - NFC Wine Cards</title>
+    <meta name="description" content="Innovative NFC tag solution for wine professionals. Connect physical wine bottles to dynamic digital profiles.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://s4ng4.github.io/SipTapForGCA/">
+    <meta property="og:title" content="SipTap - NFC Wine Cards">
+    <meta property="og:description" content="Connect physical wine bottles to dynamic digital profiles with NFC technology.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="SipTap - NFC Wine Cards">
+    <meta property="twitter:description" content="Innovative NFC solution for wine professionals and retailers.">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍷</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .wine-card-demo {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 4rem auto;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wine-card-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f);
+        }
+
+        .wine-info h2 {
+            color: #8B0000;
+            margin-bottom: 0.5rem;
+        }
+
+        .wine-info .vintage {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .wine-details {
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .wine-details div {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nfc-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .nfc-tap-area {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px dashed #4CAF50;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nfc-tap-area:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: scale(1.02);
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 4rem 0;
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-section h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">🍷 SipTap</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>🍷 SipTap</h1>
+                <p>Innovative NFC tag solution for wine professionals, retailers, and producers</p>
+                <p>Connect physical wine bottles to dynamic digital profiles — SipCards</p>
+                <button class="cta-button" onclick="showDemo()">Try Demo Tap</button>
+            </div>
+        </section>
+
+        <section id="features" class="container">
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Instant Access</h3>
+                    <p>Tap any smartphone on the NFC tag to instantly access wine information, reviews, and pairing suggestions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏷️</div>
+                    <h3>Dynamic Profiles</h3>
+                    <p>Update wine information in real-time. Change descriptions, add tasting notes, or update availability instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics</h3>
+                    <p>Track customer engagement, popular wines, and tap statistics to optimize your wine selection and marketing.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="container">
+            <div class="demo-section">
+                <h2>Interactive Demo</h2>
+                
+                <div class="nfc-tap-area" onclick="simulateNFCTap()">
+                    <h3>📡 Tap Here to Simulate NFC</h3>
+                    <p>Click to see how a customer would experience your SipCard</p>
+                </div>
+
+                <div class="wine-card-demo" id="wineCard" style="display: none;">
+                    <div class="wine-info">
+                        <h2>Chianti Classico</h2>
+                        <div class="vintage">2020 - Tuscany, Italy</div>
+                        
+                        <div class="wine-details">
+                            <div><strong>Producer:</strong> <span>Villa San Lorenzo</span></div>
+                            <div><strong>Grape:</strong> <span>Sangiovese 100%</span></div>
+                            <div><strong>Alcohol:</strong> <span>13.5%</span></div>
+                            <div><strong>Price:</strong> <span>€24.90</span></div>
+                        </div>
+                        
+                        <p><strong>Tasting Notes:</strong> Rich ruby color with aromas of cherry, violet, and herbs. Medium-bodied with silky tannins and a long, elegant finish.</p>
+                        
+                        <p><strong>Food Pairing:</strong> Perfect with grilled meats, aged cheeses, and tomato-based pasta dishes.</p>
+                        
+                        <div class="nfc-indicator">
+                            📡 NFC Connected
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <div class="container">
+                <h2>Ready to Transform Your Wine Business?</h2>
+                <p>Join hundreds of wine professionals using SipTap to enhance customer experience</p>
+                <button class="cta-button" onclick="contactUs()">Get Started</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SipTap. Connecting wine lovers through technology. 🍷</p>
+            <p>Made with ❤️ for the wine community</p>
+        </div>
+    </footer>
+
+    <script>
+        function showDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function simulateNFCTap() {
+            const wineCard = document.getElementById('wineCard');
+            const tapArea = document.querySelector('.nfc-tap-area');
+            
+            // Simula l'animazione del tap NFC
+            tapArea.style.background = 'rgba(76, 175, 80, 0.3)';
+            tapArea.innerHTML = '<h3>🔄 Processing NFC Tap...</h3><p>Loading wine information...</p>';
+            
+            setTimeout(() => {
+                wineCard.style.display = 'block';
+                wineCard.style.animation = 'slideIn 0.5s ease-out';
+                tapArea.style.display = 'none';
+            }, 1500);
+        }
+
+        function contactUs() {
+            alert('🍷 Thanks for your interest in SipTap!\n\nContact us at:\n📧 hello@siptap.wine\n📱 +39 123 456 7890\n\nOr visit our GitHub: github.com/S4ng4/SipTapForGCA');
+        }
+
+        // Simula la funzionalità NFC se supportata
+        if ('NDEFReader' in window) {
+            console.log('🍷 NFC is supported on this device!');
+        } else {
+            console.log('📱 NFC not supported, using demo mode');
+        }
+
+        // Animazione per le card quando entrano in view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Aggiungi CSS per animazioni
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
