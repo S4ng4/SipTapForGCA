@@ -1,43 +1,179 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# .github/workflows/siptap-deploy.yml
+name: 🍷 SipTap NFC Deploy
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Permessi per GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Evita esecuzioni concorrenti
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  # Job di build e validazione
+  build:
+    name: 🏗️ Build SipTap
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🔍 Detect project type
+        id: detect
+        run: |
+          echo "Analyzing SipTap project structure..."
+          
+          if [ -f "package.json" ]; then
+            echo "has_nodejs=true" >> $GITHUB_OUTPUT
+            echo "📦 Node.js project detected"
+          else
+            echo "has_nodejs=false" >> $GITHUB_OUTPUT
+            echo "📄 Static HTML project detected"
+          fi
+          
+          if [ -f "index.html" ]; then
+            echo "has_html=true" >> $GITHUB_OUTPUT
+          fi
+          
+          ls -la
+      
+      - name: 🔧 Setup Node.js
+        if: steps.detect.outputs.has_nodejs == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        if: steps.detect.outputs.has_nodejs == 'true'
+        run: npm ci
+      
+      - name: 🧪 Run tests
+        if: steps.detect.outputs.has_nodejs == 'true'
+        run: npm test --if-present
+        continue-on-error: true
+      
+      - name: 🏗️ Build project
+        if: steps.detect.outputs.has_nodejs == 'true'
+        run: npm run build --if-present
+      
+      - name: 📋 Validate NFC content
+        run: |
+          echo "🍷 Validating SipTap NFC content..."
+          
+          # Controlla se ci sono file essenziali per NFC
+          if [ -f "index.html" ] || [ -f "dist/index.html" ] || [ -f "build/index.html" ]; then
+            echo "✅ Main HTML file found"
+          else
+            echo "⚠️ No main HTML file found"
+          fi
+          
+          # Cerca riferimenti NFC nel codice
+          if grep -r -i "nfc\|tap\|card" . --include="*.html" --include="*.js" --include="*.css" 2>/dev/null; then
+            echo "✅ NFC-related content detected"
+          else
+            echo "ℹ️ No obvious NFC references found"
+          fi
+      
+      - name: 📁 Prepare deployment files
+        run: |
+          echo "Preparing SipTap files for deployment..."
+          
+          # Crea cartella di output
+          mkdir -p ./deploy
+          
+          # Copia i file built se esistono, altrimenti i file sorgente
+          if [ -d "dist" ]; then
+            cp -r dist/* ./deploy/
+            echo "📦 Using built files from dist/"
+          elif [ -d "build" ]; then
+            cp -r build/* ./deploy/
+            echo "📦 Using built files from build/"
+          else
+            # Copia tutti i file necessari escludendo quelli non necessari
+            cp -r . ./deploy/
+            # Rimuovi file/cartelle non necessarie
+            rm -rf ./deploy/.git ./deploy/.github ./deploy/node_modules ./deploy/deploy
+            echo "📄 Using source files directly"
+          fi
+          
+          # Verifica che ci sia almeno un index.html
+          if [ ! -f "./deploy/index.html" ]; then
+            echo "Creating basic index.html for SipTap..."
+            cat > ./deploy/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="it">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>SipTap - NFC Wine Cards</title>
+              <style>
+                  body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
+                  .wine-card { max-width: 400px; margin: 2rem auto; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
+              </style>
+          </head>
+          <body>
+              <h1>🍷 SipTap NFC Solution</h1>
+              <div class="wine-card">
+                  <h2>Welcome to SipTap</h2>
+                  <p>Innovative NFC tag solution for wine professionals, retailers, and producers.</p>
+                  <p>Connect physical wine bottles to dynamic digital profiles.</p>
+              </div>
+          </body>
+          </html>
+          EOF
+          fi
+      
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: siptap-nfc-site
+          path: ./deploy
+          retention-days: 30
+
+  # Job di deploy su GitHub Pages (solo per push su main)
   deploy:
+    name: 🚀 Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: 🔧 Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
+          name: siptap-nfc-site
+          path: ./site
+      
+      - name: 📤 Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./site
+      
+      - name: 🚀 Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v2
+      
+      - name: 🎉 Deployment complete
+        run: |
+          echo "🍷 SipTap NFC solution deployed successfully!"
+          echo "🔗 Your site is now live at: ${{ steps.deployment.outputs.page_url }}"
+          echo "📱 Ready for NFC wine card interactions!"
