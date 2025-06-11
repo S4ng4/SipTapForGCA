@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine AR Experience - Barbaresco 2021</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Garamond', serif;
+            background: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #videoContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #camera {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .ar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .instruction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(192, 99, 119, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+            animation: pulse 2s infinite;
+            transition: all 0.5s ease;
+        }
+        
+        .instruction.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+        
+        .wine-card-ar {
+            position: fixed;
+            background: rgba(253, 245, 247, 0.95);
+            color: #333;
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(192, 99, 119, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(100%);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 15;
+        }
+        
+        .wine-card-ar.visible {
+            transform: translateY(0);
+        }
+        
+        .card-info {
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+        
+        .card-radar {
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-aroma {
+            top: 20px;
+            left: 20px;
+            width: 350px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 25;
+            pointer-events: all;
+        }
+        
+        .nav-btn {
+            background: rgba(192, 99, 119, 0.8);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-family: 'Garamond', serif;
+            font-size: 14px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(192, 99, 119, 1);
+            transform: scale(1.05);
+        }
+        
+        .nav-btn.active {
+            background: #c06377;
+            box-shadow: 0 0 20px rgba(192, 99, 119, 0.6);
+        }
+        
+        .floating-title {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(192, 99, 119, 0.9);
+            padding: 15px 30px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            z-index: 20;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        .radar-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 5px 15px rgba(192, 99, 119, 0.3));
+        }
+        
+        .wine-type-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #c06377;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .spec-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(192, 99, 119, 0.2);
+        }
+        
+        .spec-item strong {
+            color: #c06377;
+            display: block;
+            font-size: 12px;
+        }
+        
+        h1, h2, h3 {
+            color: #c06377;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(220, 53, 69, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 30;
+        }
+        
+        @media (max-width: 768px) {
+            .wine-card-ar {
+                margin: 10px;
+            }
+            
+            .card-radar {
+                width: 250px;
+                height: 250px;
+                right: 10px;
+            }
+            
+            .card-aroma {
+                width: 280px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="videoContainer">
+        <video id="camera" autoplay muted playsinline></video>
+    </div>
+    
+    <div class="ar-overlay"></div>
+    
+    <div class="instruction" id="instruction">
+        <h2>🍷 Wine AR Experience</h2>
+        <p>Inquadra una bottiglia di vino per scoprire i suoi segreti!</p>
+        <small>Tocca lo schermo per iniziare</small>
+        <div style="margin-top: 15px; font-size: 12px; opacity: 0.8;">
+            💡 Se la camera non funziona, vedrai una demo completa!
+        </div>
+    </div>
+    
+    <div class="floating-title" id="floatingTitle" style="display: none;">
+        <h2>Barbaresco 2021 <span class="wine-type-indicator">DOCG</span></h2>
+    </div>
+    
+    <!-- Wine Info Card -->
+    <div class="wine-card-ar card-info" id="infoCard">
+        <h2>Castello di Neive - Barbaresco 2021</h2>
+        <div class="spec-grid">
+            <div class="spec-item">
+                <strong>Producer:</strong>
+                Castello di Neive
+            </div>
+            <div class="spec-item">
+                <strong>Grapes:</strong>
+                Nebbiolo 100%
+            </div>
+            <div class="spec-item">
+                <strong>Vintage:</strong>
+                2021
+            </div>
+            <div class="spec-item">
+                <strong>Alcohol:</strong>
+                14%
+            </div>
+            <div class="spec-item">
+                <strong>Aging:</strong>
+                24 months in oak barrels
+            </div>
+            <div class="spec-item">
+                <strong>Temperature:</strong>
+                16-18°C
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <h3>Vintage 2021</h3>
+            <p style="font-size: 14px; line-height: 1.4;">Cool, elegant vintage with spring rains and breezy summer, enhancing vibrant acidity</p>
+            
+            <h3 style="margin-top: 15px;">Food Pairings</h3>
+            <p style="font-size: 14px; line-height: 1.4;">Piedmontese agnolotti, Barolo-braised meats, aged cheeses</p>
+        </div>
+    </div>
+    
+    <!-- Radar Chart Card -->
+    <div class="wine-card-ar card-radar" id="radarCard">
+        <svg class="radar-svg" viewBox="0 0 300 300">
+            <defs>
+                <radialGradient id="radarGradient" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style="stop-color:rgba(192,99,119,0.1);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:rgba(192,99,119,0.3);stop-opacity:1" />
+                </radialGradient>
+            </defs>
+            
+            <!-- Background circles -->
+            <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(192,99,119,0.2)" stroke-width="1"/>
+            <circle cx="150" cy="150" r="80" fill="none" stroke="rgba(192,99,119,0.2)" stroke-width="1"/>
+            <circle cx="150" cy="150" r="40" fill="none" stroke="rgba(192,99,119,0.2)" stroke-width="1"/>
+            
+            <!-- Axis lines -->
+            <line x1="150" y1="150" x2="150" y2="30" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            <line x1="150" y1="150" x2="254" y2="90" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            <line x1="150" y1="150" x2="254" y2="210" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            <line x1="150" y1="150" x2="150" y2="270" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            <line x1="150" y1="150" x2="46" y2="210" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            <line x1="150" y1="150" x2="46" y2="90" stroke="rgba(192,99,119,0.3)" stroke-width="1"/>
+            
+            <!-- Labels -->
+            <text x="150" y="20" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Body</text>
+            <text x="270" y="95" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Tannins</text>
+            <text x="270" y="215" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Alcohol</text>
+            <text x="150" y="290" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Persistence</text>
+            <text x="30" y="215" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Acidity</text>
+            <text x="30" y="95" text-anchor="middle" fill="#c06377" font-size="12" font-family="Garamond">Complexity</text>
+            
+            <!-- Data polygon -->
+            <polygon points="150,82 218,98 201,186 150,226 82,194 82,98" fill="url(#radarGradient)" stroke="#c06377" stroke-width="3"/>
+            
+            <!-- Data points -->
+            <circle cx="150" cy="82" r="4" fill="#c06377"/>
+            <circle cx="218" cy="98" r="4" fill="#c06377"/>
+            <circle cx="201" cy="186" r="4" fill="#c06377"/>
+            <circle cx="150" cy="226" r="4" fill="#c06377"/>
+            <circle cx="82" cy="194" r="4" fill="#c06377"/>
+            <circle cx="82" cy="98" r="4" fill="#c06377"/>
+        </svg>
+    </div>
+    
+    <!-- Aroma Chart Card -->
+    <div class="wine-card-ar card-aroma" id="aromaCard">
+        <h3 style="text-align: center; margin-bottom: 20px;">Aromatic Profile</h3>
+        <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Red fruits</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 70%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Floral</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 50%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Spices</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 50%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Citrus</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 30%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Smoky</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 30%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px;">Mineral</span>
+                <div style="width: 150px; height: 8px; background: rgba(192,99,119,0.2); border-radius: 4px;">
+                    <div style="width: 30%; height: 100%; background: #c06377; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="border-top: 1px solid rgba(192,99,119,0.3); padding-top: 15px;">
+            <h4 style="margin-bottom: 10px;">Tasting Notes</h4>
+            <div style="margin-bottom: 10px;">
+                <strong style="color: #c06377; font-size: 12px;">Visual:</strong>
+                <p style="font-size: 11px; margin: 3px 0;">Transparent ruby red, garnet reflections</p>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <strong style="color: #c06377; font-size: 12px;">Olfactory:</strong>
+                <p style="font-size: 11px; margin: 3px 0;">Dried rose, raspberry, sweet spices, light smokiness</p>
+            </div>
+            <div>
+                <strong style="color: #c06377; font-size: 12px;">Gustatory:</strong>
+                <p style="font-size: 11px; margin: 3px 0;">Elegant, polished tannins, fresh citrusy finish</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-controls">
+        <button class="nav-btn active" onclick="showCard('info')">Info</button>
+        <button class="nav-btn" onclick="showCard('radar')">Structure</button>
+        <button class="nav-btn" onclick="showCard('aroma')">Aromas</button>
+    </div>
+
+    <script>
+        let currentCard = 'info';
+        let cameraActive = false;
+        
+        async function initCamera() {
+            // Check if we're in a secure context
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showCameraFallback();
+                return;
+            }
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    }
+                });
+                
+                const video = document.getElementById('camera');
+                video.srcObject = stream;
+                cameraActive = true;
+                
+                // Hide instruction after camera starts
+                setTimeout(() => {
+                    hideInstruction();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                showCameraFallback();
+            }
+        }
+        
+        function showCameraFallback() {
+            // Create a beautiful gradient background instead of camera
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(45deg, 
+                        #1a1a1a 0%, 
+                        #2d1b1f 25%, 
+                        #3d2329 50%, 
+                        #2d1b1f 75%, 
+                        #1a1a1a 100%);
+                    background-size: 400% 400%;
+                    animation: gradientShift 8s ease infinite;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                ">
+                    <div style="
+                        text-align: center;
+                        color: rgba(255,255,255,0.7);
+                        font-family: Garamond, serif;
+                    ">
+                        <div style="font-size: 72px; margin-bottom: 20px;">🍷</div>
+                        <h3>Esperienza Wine AR</h3>
+                        <p>Simulazione senza camera</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes gradientShift {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            cameraActive = true;
+            setTimeout(() => {
+                hideInstruction();
+            }, 1000);
+        }
+        
+        function hideInstruction() {
+            const instruction = document.getElementById('instruction');
+            const floatingTitle = document.getElementById('floatingTitle');
+            
+            instruction.classList.add('hidden');
+            floatingTitle.style.display = 'block';
+            
+            setTimeout(() => {
+                instruction.style.display = 'none';
+                showCard('info');
+            }, 500);
+        }
+        
+        function showCard(cardType) {
+            // Hide all cards
+            document.querySelectorAll('.wine-card-ar').forEach(card => {
+                card.classList.remove('visible');
+            });
+            
+            // Remove active class from buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected card
+            setTimeout(() => {
+                const cardMap = {
+                    'info': 'infoCard',
+                    'radar': 'radarCard', 
+                    'aroma': 'aromaCard'
+                };
+                
+                document.getElementById(cardMap[cardType]).classList.add('visible');
+                event.target.classList.add('active');
+                currentCard = cardType;
+            }, 200);
+        }
+        
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `
+                <h3>❌ Errore</h3>
+                <p>${message}</p>
+                <button onclick="this.parentElement.remove()" style="margin-top: 10px; padding: 8px 16px; background: white; color: #dc3545; border: none; border-radius: 5px; cursor: pointer;">OK</button>
+            `;
+            document.body.appendChild(errorDiv);
+        }
+        
+        // Initialize on click/touch
+        document.addEventListener('click', () => {
+            if (!cameraActive) {
+                initCamera();
+            }
+        });
+        
+        document.addEventListener('touchstart', () => {
+            if (!cameraActive) {
+                initCamera();
+            }
+        });
+        
+        // Show info card by default after a delay
+        setTimeout(() => {
+            if (cameraActive) {
+                showCard('info');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
