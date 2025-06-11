@@ -1,443 +1,862 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SipTap - NFC Wine Cards</title>
-    <meta name="description" content="Innovative NFC tag solution for wine professionals. Connect physical wine bottles to dynamic digital profiles.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SipTap | Tap. Taste. Transcend.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  <style>
+    :root {
+      --primary-gold: #D4B456;
+      --primary-gold-hover: #E0C472;
+      --primary-wine: #8E1C38;
+      --accent-red: #E27285;
+      --spiral-cream: #E6D7B9;
+      --text-color: #333;
+      --bg-white: #ffffff;
+      --bg-light: #f8f8f8;
+      --accent-light: #f0f0f0;
+    }
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://s4ng4.github.io/SipTapForGCA/">
-    <meta property="og:title" content="SipTap - NFC Wine Cards">
-    <meta property="og:description" content="Connect physical wine bottles to dynamic digital profiles with NFC technology.">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="SipTap - NFC Wine Cards">
-    <meta property="twitter:description" content="Innovative NFC solution for wine professionals and retailers.">
+    body {
+      margin: 0;
+      background-color: var(--bg-white);
+      color: var(--text-color);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍷</text></svg>">
+    .geometric-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4b456' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238e1c38' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23e27285' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.7;
+      z-index: -1;
+    }
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-
-        main {
-            margin-top: 80px;
-            padding: 2rem 0;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #ff6b6b;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 4rem 0;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .wine-card-demo {
-            background: rgba(255, 255, 255, 0.95);
-            margin: 4rem auto;
-            max-width: 400px;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: #333;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wine-card-demo::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f);
-        }
-
-        .wine-info h2 {
-            color: #8B0000;
-            margin-bottom: 0.5rem;
-        }
-
-        .wine-info .vintage {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .wine-details {
-            text-align: left;
-            margin: 1.5rem 0;
-        }
-
-        .wine-details div {
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .nfc-indicator {
-            display: inline-flex;
-            align-items: center;
-            background: #4CAF50;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .nfc-tap-area {
-            background: rgba(76, 175, 80, 0.1);
-            border: 2px dashed #4CAF50;
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nfc-tap-area:hover {
-            background: rgba(76, 175, 80, 0.2);
-            transform: scale(1.02);
-        }
-
-        .footer {
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .demo-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            margin: 4rem 0;
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .demo-section h2 {
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
-        }
-    </style>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    /* Floating logo background that moves with scroll */
+    .floating-logo {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40vw;
+        max-width: 300px;
+        max-height: 300px;
+        height: 40vw;
+        z-index: -1;
+        opacity: 0.1;
+        transition: opacity 0.5s ease-out;
+        pointer-events: none;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3rem;
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      flex-wrap: wrap;
+      z-index: 2;
+    }
+    
+    .logo-container img {
+      max-width: 150%;
+      height: auto;
+      display: block;
+    }
+    
+    .logo-text {
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 5rem;
+      color: var(--text-color);
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.5rem;
+      margin: 1.5rem 0;
+      font-weight: 700;
+      text-shadow: 2px 2px 0 rgba(212, 180, 86, 0.3);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .logo-text::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--primary-gold), transparent);
+    }
+    
+    .logo-element {
+      width: 15vw;
+      max-width: 80px;
+      height: auto;
+      margin: 1rem;
+      position: relative;
+    }
+    
+    .red-circle {
+      border-radius: 50%;
+      background-color: var(--primary-wine);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .red-circle::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.05) 5px,
+        transparent 5px,
+        transparent 10px
+      );
+    }
+    
+    .gold-hook {
+      background-color: transparent;
+      position: relative;
+    }
+    
+    .gold-hook::before {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 70px;
+      border-radius: 50% 50% 0 50%;
+      border: 8px solid var(--primary-gold);
+      border-left: 0;
+      transform: rotate(-15deg);
+      top: 0;
+      right: 20px;
+    }
+    
+    .pink-flower {
+      position: relative;
+    }
+    
+    .pink-flower::before,
+    .pink-flower::after {
+      content: '';
+      position: absolute;
+      background-color: var(--accent-red);
+      border-radius: 50% 50% 0 50%;
+      width: 30px;
+      height: 30px;
+      top: 25px;
+      left: 25px;
+    }
+    
+    .pink-flower::before {
+      transform: rotate(0deg);
+    }
+    
+    .pink-flower::after {
+      transform: rotate(120deg);
+    }
+    
+    .pink-flower span {
+      position: absolute;
+      background-color: var(--accent-red);
+      border-radius: 50% 50% 0 50%;
+      width: 30px;
+      height: 30px;
+      top: 25px;
+      left: 25px;
+      transform: rotate(240deg);
+    }
+    
+    .cream-spiral {
+      position: relative;
+    }
+    
+    .cream-spiral::before {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 8px solid var(--spiral-cream);
+      border-top-color: transparent;
+      border-radius: 50%;
+      top: 15px;
+      left: 15px;
+      transform: rotate(45deg);
+    }
+    
+    .cream-spiral::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 5px solid var(--spiral-cream);
+      border-top-color: transparent;
+      border-radius: 50%;
+      top: 25px;
+      left: 25px;
+      transform: rotate(45deg);
+    }
+    
+    h1 {
+      font-family: 'Cinzel Decorative', cursive;
+      color: var(--primary-gold);
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      margin-bottom: 0;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    
+    h1:hover {
+      color: var(--primary-gold-hover);
+    }
+    
+    h2 {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--primary-wine);
+      margin-bottom: 2rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    
+    h2:hover {
+      color: var(--primary-gold);
+    }
+    
+    .tagline {
+      font-style: normal;
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      max-width: 800px;
+      font-weight: 300;
+    }
+    
+    p {
+      max-width: 800px;
+      text-align: center;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .section {
+      padding: 6rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .benefits-section {
+      background-color: var(--bg-light);
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .benefits-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(142, 28, 56, 0.03) 0%, rgba(212, 180, 86, 0.03) 100%);
+      z-index: -1;
+    }
+    
+    .benefits-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .benefits-carousel {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Enhanced benefit cards with background images */
+    .benefit-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 30px;
+      padding: 2.5rem;
+      margin: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid transparent;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 30px var(--primary-gold);
+      border-top-color: var(--primary-gold);
+    }
+    
+    .benefit-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary-wine), var(--accent-red));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    
+    .benefit-card:hover::after {
+      transform: scaleX(1);
+    }
+    
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 0;
+      transition: background-color 0.3s ease;
+    }
+    
+    .benefit-card:hover::before {
+      background: rgba(255, 255, 255, 0.75);
+    }
+    
+    .benefit-card-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .benefit-card h3 {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1.4rem;
+      color: var(--primary-wine);
+      margin-bottom: 1rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+    
+    .benefit-card:hover h3 {
+      color: var(--primary-gold);
+    }
+    
+    .benefit-card p {
+      font-size: 1rem;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+    }
+    
+    .benefit-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+    
+    .benefit-card:hover .benefit-icon {
+      transform: scale(1.1);
+    }
+    
+    .benefit-icon img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+      transition: filter 0.3s ease;
+      border-radius: 30px;
+    }
+    
+    .benefit-card:hover .benefit-icon img {
+      filter: drop-shadow(0 0 10px var(--primary-gold));
+    }
+    
+    .benefit-icon::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(142, 28, 56, 0.05);
+      z-index: -1;
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 248, 248, 0.9) 100%);
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(142, 28, 56, 0.02) 0%, rgba(212, 180, 86, 0.02) 50%, rgba(255, 255, 255, 0) 70%);
+      z-index: -1;
+    }
+    
+    .cta-section h2 {
+      margin-bottom: 3rem;
+    }
+    
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    /* Enhanced buttons with gold hover effect */
+    .button {
+      background-color: var(--primary-wine);
+      color: white;
+      font-family: 'Cinzel', serif;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+    }
+    
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 180, 86, 0.3), transparent);
+      transition: left 0.7s ease;
+    }
+    
+    .button:hover {
+      background-color: #7a2433;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15), 0 0 15px var(--primary-gold);
+      color: white;
+    }
+    
+    .button:hover::before {
+      left: 100%;
+    }
+    
+    .footer {
+      background-color: #f8f4ef;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--primary-wine);
+    }
+    
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: var(--accent-red);
+      transition: color 0.3s ease;
+    }
+    
+    .footer-note:hover {
+      color: var(--primary-gold);
+    }
+    
+    .footer-note strong {
+      color: var(--primary-wine);
+      transition: color 0.3s ease;
+    }
+    
+    .footer-note:hover strong {
+      color: var(--primary-gold);
+    }
+    
+    .description-section {
+      padding: 5rem 2rem;
+      background-color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+    }
+    
+    .description-section p {
+      margin: 0 auto 2rem;
+    }
+    
+    .highlight {
+      color: var(--primary-wine);
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    
+    .highlight:hover {
+      color: var(--primary-gold);
+    }
+    
+    /* Fixed bottle background effect */
+    .bottle-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("LogoFinal.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.03;
+      z-index: -2;
+      filter: blur(1px);
+    }
+    .SipTap3Steps {
+      width: 100px:
+      height 100px;
+    }
+    /* Added mobile responsiveness */
+    @media (max-width: 768px) {
+      .hero {
+        height: auto;
+        min-height: 500px;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+      }
+      
+      .floating-logo {
+        width: 60vw;
+        height: 60vw;
+        opacity: 0.05; 
+      }
+      
+      .logo-container img {
+        max-width: 80%;
+        height: auto;
+        margin: 0 auto;
+      }
+      
+      .benefits-section {
+        padding: 3rem 0;
+      }
+      
+      .benefit-card {
+        height: auto;
+        min-height: 380px;
+        padding: 2rem 1.5rem;
+      }
+      
+      .buttons-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+    
+    /* Hover glow effect for all interactive elements */
+    a:not(.button), .interactive-element {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    a:not(.button):hover, .interactive-element:hover {
+      color: var(--primary-gold);
+    }
+    
+    a:not(.button)::after, .interactive-element::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--primary-gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    
+    a:not(.button):hover::after, .interactive-element:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">🍷 SipTap</a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#demo">Demo</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>🍷 SipTap</h1>
-                <p>Innovative NFC tag solution for wine professionals, retailers, and producers</p>
-                <p>Connect physical wine bottles to dynamic digital profiles — SipCards</p>
-                <button class="cta-button" onclick="showDemo()">Try Demo Tap</button>
-            </div>
-        </section>
-
-        <section id="features" class="container">
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Instant Access</h3>
-                    <p>Tap any smartphone on the NFC tag to instantly access wine information, reviews, and pairing suggestions.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏷️</div>
-                    <h3>Dynamic Profiles</h3>
-                    <p>Update wine information in real-time. Change descriptions, add tasting notes, or update availability instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Analytics</h3>
-                    <p>Track customer engagement, popular wines, and tap statistics to optimize your wine selection and marketing.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="demo" class="container">
-            <div class="demo-section">
-                <h2>Interactive Demo</h2>
-                
-                <div class="nfc-tap-area" onclick="simulateNFCTap()">
-                    <h3>📡 Tap Here to Simulate NFC</h3>
-                    <p>Click to see how a customer would experience your SipCard</p>
-                </div>
-
-                <div class="wine-card-demo" id="wineCard" style="display: none;">
-                    <div class="wine-info">
-                        <h2>Chianti Classico</h2>
-                        <div class="vintage">2020 - Tuscany, Italy</div>
-                        
-                        <div class="wine-details">
-                            <div><strong>Producer:</strong> <span>Villa San Lorenzo</span></div>
-                            <div><strong>Grape:</strong> <span>Sangiovese 100%</span></div>
-                            <div><strong>Alcohol:</strong> <span>13.5%</span></div>
-                            <div><strong>Price:</strong> <span>€24.90</span></div>
-                        </div>
-                        
-                        <p><strong>Tasting Notes:</strong> Rich ruby color with aromas of cherry, violet, and herbs. Medium-bodied with silky tannins and a long, elegant finish.</p>
-                        
-                        <p><strong>Food Pairing:</strong> Perfect with grilled meats, aged cheeses, and tomato-based pasta dishes.</p>
-                        
-                        <div class="nfc-indicator">
-                            📡 NFC Connected
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="hero">
-            <div class="container">
-                <h2>Ready to Transform Your Wine Business?</h2>
-                <p>Join hundreds of wine professionals using SipTap to enhance customer experience</p>
-                <button class="cta-button" onclick="contactUs()">Get Started</button>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 SipTap. Connecting wine lovers through technology. 🍷</p>
-            <p>Made with ❤️ for the wine community</p>
+  <div class="geometric-bg"></div>
+  <div class="bottle-bg"></div>
+  <div class="floating-logo">
+    <img src="" alt="">
+  </div>
+  
+  <section class="hero">
+    <div class="logo-container">
+      <img src="LogoFinal.png" alt="SipTap Logo">
+    </div>
+    <div class="container">
+      <h2>Tap. Taste. Transcend.</h2>
+      <p class="tagline">
+        SipTap empowers wine stores to present their products through refined, digital wine cards — called SipCards. An elegant way to express wine identity, share product stories, and connect with customers through a single tap.
+      </p>
+    </div>
+  </section>
+  
+  <section class="benefits-section">
+    <div class="container benefits-header">
+      <h2>Elevate Your Wine Experience</h2>
+    </div>
+    
+    <div class="benefits-carousel">
+      <div class="benefit-card" style="background-image: url(RedLogo.png);">
+        <div class="benefit-card-content">
+          <div class="benefit-icon">
+            <img src="RedLogo.png" alt="Customer Engagement Icon">
+          </div>
+          <h3>Increase Customer Engagement</h3>
+          <p>Interactive wine cards invite customers to explore, learn, and connect. By transforming each bottle into a story worth discovering, you turn a simple purchase into a memorable, immersive experience.</p>
         </div>
-    </footer>
+      </div>
+      
+      <div class="benefit-card" style="background-image: url(WhiteLogo.png);">
+        <div class="benefit-card-content">
+          <div class="benefit-icon">
+            <img src="WhiteLogo.png" alt="Stand Out Icon">
+          </div>
+          <h3>Makes Your Bottles Stand Out</h3>
+          <p>With a digital identity linked to each bottle, your wine becomes instantly recognizable. It's not just another label on a shelf—it's a unique presence that captures attention and leaves a lasting impression.</p>
+        </div>
+      </div>
+      
+      <div class="benefit-card" style="background-image: url(RoseLogo.png);">
+        <div class="benefit-card-content">
+          <div class="benefit-icon">
+            <img src="RoseLogo.png" alt="Sales Boost Icon">
+          </div>
+          <h3>Boosts Sales</h3>
+          <p>When wine is presented clearly and professionally, customers feel more confident and curious. Detailed cards increase trust and drive purchasing decisions, especially for premium selections.</p>
+        </div>
+      </div>
+      
+      <div class="benefit-card" style="background-image: url(SparklingLogo.png);">
+        <div class="benefit-card-content">
+          <div class="benefit-icon">
+            <img src="SparklingLogo.png" alt="Competitive Edge Icon">
+          </div>
+          <h3>Sets Your Venue Apart</h3>
+          <p>Offering digital wine cards shows innovation and care for the customer experience. It becomes a signature touch that distinguishes your venue, creating value and memorability beyond the wine.</p>
+        </div>
+      </div>
 
-    <script>
-        function showDemo() {
-            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-        }
+      <div class="benefit-card" style="background-image: url(All Simbles.jpg);">
+  <div class="benefit-card-content">
+    <div class="benefit-icon">
+      <img src="All Simbles.jpg" alt="Training Icon">
+    </div>
+    <h3>Staff Training Made Simple</h3>
+    <p>Each SipTap card acts as a fast, elegant training tool. New staff can instantly access key wine info—from tasting notes to pairing tips—just by tapping. No apps, no manuals, just smart onboarding.</p>
+  </div>
+</div>
 
-        function simulateNFCTap() {
-            const wineCard = document.getElementById('wineCard');
-            const tapArea = document.querySelector('.nfc-tap-area');
-            
-            // Simula l'animazione del tap NFC
-            tapArea.style.background = 'rgba(76, 175, 80, 0.3)';
-            tapArea.innerHTML = '<h3>🔄 Processing NFC Tap...</h3><p>Loading wine information...</p>';
-            
-            setTimeout(() => {
-                wineCard.style.display = 'block';
-                wineCard.style.animation = 'slideIn 0.5s ease-out';
-                tapArea.style.display = 'none';
-            }, 1500);
-        }
+    </div>
+  </section>
+  
+  <section class="description-section">
+    <div class="container">
+      <h2>Low Tech, High Impact. Tap into the future.</h2>
+      <p>
+        SipTap is a smart tool designed for wine lovers, restaurant owners, shops, and producers. <span class="highlight">Elegant. Intuitive. Revolutionary.</span>
+      </p>
+      <p>
+        SipTap isn't just a Wine Card — it's the future of wine communication.
+        With just one tap, your customers access rich, immersive content: tasting notes, aging details, pairings, and the soul of your wine — all in seconds.
+      </p>
+      <p>
+        It's elegant. It's instant. It's unforgettable.
+        <span class="highlight">No apps. No QR codes. No friction.</span>
+      </p>
+      <p>
+        This isn't a trend — it's the new standard.
+        Forget complex systems—SipTap works with what you already have. A smartphone and a simple tap are enough to deliver clarity, style, and consistent information across the entire wine selection.
+        Don't get left behind. Tap into the future.
+      </p>
+    </div>
+  </section>
+  
+  <section class="cta-section">
+    <div class="container">
+      <h2>Begin Your SipTap Journey</h2>
+      <div class="buttons-container">
+        <a href="SipTapTemplate.xlsx" class="button">Download SipCard Template</a>
+        <a href="DemoRequest.html" class="button">Discover SipCard Examples</a>
+        <a href="ReadySaleSheetB.html" class="button">Check the Benefit!</a>
+       
+        
+      </div>
+    </div>
+  </section>
 
-        function contactUs() {
-            alert('🍷 Thanks for your interest in SipTap!\n\nContact us at:\n📧 hello@siptap.wine\n📱 +39 123 456 7890\n\nOr visit our GitHub: github.com/S4ng4/SipTapForGCA');
-        }
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-note">
+        Send your completed SipCard to: <strong>Asangalli01@gmail.com</strong>
+      </div>
+    </div>
+  </footer>
 
-        // Simula la funzionalità NFC se supportata
-        if ('NDEFReader' in window) {
-            console.log('🍷 NFC is supported on this device!');
-        } else {
-            console.log('📱 NFC not supported, using demo mode');
-        }
-
-        // Animazione per le card quando entrano in view
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card').forEach(card => {
-            observer.observe(card);
+  <script>
+    $(document).ready(function(){
+      // Slick carousel initialization - VELOCITÀ AUMENTATA
+      $('.benefits-carousel').slick({
+        dots: true,
+        infinite: true,
+        speed: 300, // Velocità di transizione ridotta da 500 a 300ms
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000, // Tempo tra le slide ridotto da 4000 a 2000ms
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+      });
+      
+      // CORREZIONE: Logo fisso durante lo scrolling
+      // Il logo ora rimane sempre nella posizione centrale senza spostarsi con lo scroll
+      $(window).scroll(function() {
+        var scrollTop = $(window).scrollTop();
+        
+        // Modifica solo l'opacità del logo in base allo scroll, ma mantiene la posizione fissa
+        $('.floating-logo').css({
+          'opacity': Math.max(0.1, 0.3 - scrollTop / 1000)
         });
+        
+        // Rimuove completamente la traslazione basata sullo scroll
+        // Il logo rimane centrato con transform: translate(-50%, -50%)
+      });
+      
+      // Function to download the Google Sheets document
+      function downloadGoogleSheet() {
+        // The Google Sheets ID extracted from the URL
+        // ID completo: https://docs.google.com/spreadsheets/d/1N-3N3jmVooKD7wTYbc7TEsltxva3XUDM_15ImLDBMIw/edit?gid=0#gid=0
+        const sheetId = "1N-3N3jmVooKD7wTYbc7TEsltxva3XUDM_15ImLDBMIw";
+        
+        // Create the export URL (format=xlsx for Excel file)
+        const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx`;
+        
+        console.log("Starting download from:", exportUrl);
+        
+        // Create a temporary link element to trigger the download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = exportUrl;
+        downloadLink.setAttribute('download', 'downloaded_spreadsheet.xlsx');
+        downloadLink.setAttribute('target', '_blank');
+        
+        // Append to body, click to download, then remove
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        
+        console.log("Download initiated. If you're not seeing the download, please check if your browser is blocking pop-ups.");
+        
+        return "Download process completed. Check your downloads folder for 'downloaded_spreadsheet.xlsx'";
+      }
 
-        // Aggiungi CSS per animazioni
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.9);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+      // Execute the download function
+      downloadGoogleSheet();
+    });
+  </script>
+</body>
+</html>
+  </script>
 </body>
 </html>
