@@ -184,15 +184,18 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1;
-            opacity: 0.15;
+            opacity: 0.25;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .region-logo img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
-            filter: grayscale(100%) brightness(0.7);
+            filter: grayscale(80%) brightness(0.8);
         }
         
         .winemaker-card h4,
@@ -340,11 +343,9 @@
         }
         
         .wine-icon {
+            font-size: 3em;
             margin-right: 20px;
             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         .wine-details h3 {
@@ -473,9 +474,7 @@
                 
                 <div class="wine-buttons-container">
                     <a href="Tignanello.html" class="wine-button tignanello" onclick="alert('Opening Tignanello By Antinori 2019 - Technical Sheet')">
-                        <div class="wine-icon">
-                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Red wine glass" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                        </div>
+                        <div class="wine-icon">🍷</div>
                         <div class="wine-details">
                             <h3>Tignanello</h3>
                             <p>By Antinori 2019</p>
@@ -484,9 +483,7 @@
                     </a>
                     
                     <a href="Dreams 2020.html" class="wine-button jermann" onclick="alert('Opening Jermann - Dreams 2020 - Technical Sheet')">
-                        <div class="wine-icon">
-                            <img src="https://images.unsplash.com/photo-1547595628-c61a29f496f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="White wine glass" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                        </div>
+                        <div class="wine-icon">🥂</div>
                         <div class="wine-details">
                             <h3>Dreams</h3>
                             <p>Jermann 2020</p>
