@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exclusive Collection - Wine Director Riccardo Longo</title>
+    <title>Riccardo's Wine Cellar Selections - Wine Director Riccardo Longo</title>
     <style>
         body {
             font-family: 'Garamond', serif;
@@ -174,6 +174,31 @@
             border-radius: 8px;
             border-left: 4px solid #5e1914;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .region-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        .region-logo img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.7);
+        }
+        
+        .winemaker-card h4,
+        .winemaker-card p {
+            position: relative;
+            z-index: 2;
         }
         
         .winemaker-card:hover {
@@ -315,9 +340,11 @@
         }
         
         .wine-icon {
-            font-size: 3em;
             margin-right: 20px;
             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .wine-details h3 {
@@ -335,16 +362,6 @@
         }
         
         .wine-type-indicator {
-            display: inline-block;
-            padding: 8px 15px;
-            background: linear-gradient(135deg, #5e1914 0%, #8b2635 100%);
-            color: white;
-            border-radius: 25px;
-            font-size: 14px;
-            margin-left: 15px;
-            vertical-align: middle;
-            box-shadow: 0 2px 8px rgba(94,25,20,0.3);
-        }
             display: inline-block;
             padding: 8px 15px;
             background: linear-gradient(135deg, #5e1914 0%, #8b2635 100%);
@@ -376,6 +393,7 @@
                 width: 150px;
                 height: 150px;
                 font-size: 2.5em;
+                margin-bottom: 20px;
             }
             
             .winemakers-grid {
@@ -388,6 +406,10 @@
             
             .welcome-card {
                 padding: 30px 20px;
+            }
+            
+            .wine-buttons-container {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -412,7 +434,7 @@
 </head>
 <body>
     <header>
-        <h1>Exclusive Collection <span class="wine-type-indicator">Super Premium</span></h1>
+        <h1>Riccardo's Wine Cellar Selections <span class="wine-type-indicator">Super Premium</span></h1>
         <p>Curated by Wine Director Riccardo Longo</p>
     </header>
     
@@ -423,11 +445,11 @@
                 <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
             </div>
             <div class="welcome-card">
-                <h1 style="color: #5e1914; margin-bottom: 20px;">Welcome to a Unique Experience</h1>
+                <h1 style="color: #5e1914; margin-bottom: 20px;">Welcome to an Authentic Italian Luxury Experience</h1>
                 <p style="font-size: 1.2em; color: #2c1e1d; margin-bottom: 30px;">
-                    You have just discovered an exclusive selection of super premium wines, 
-                    an extraordinary collection born from the passion and expertise 
-                    of our Wine Director.
+                    You have just discovered an exclusive selection of super premium Italian wines, 
+                    an extraordinary collection born from the passion, expertise & relationships 
+                    of our Award winning founder and wine director, Riccardo Longo.
                 </p>
                 <p style="font-style: italic; color: #8b2635; font-size: 1.1em;">
                     "Every bottle tells a story of excellence, 
@@ -436,68 +458,9 @@
             </div>
         </div>
         
-        <!-- Wine Director Card -->
-        <div class="card-container">
-            <div class="logo-background">
-                <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
-            </div>
-            <div class="wine-director-section">
-                <div class="director-image">
-                    <div class="director-placeholder">RL</div>
-                </div>
-                <div class="director-info">
-                    <h2>Riccardo Longo</h2>
-                    <h3>Wine Director & Sommelier</h3>
-                    <p>
-                        With over 15 years of experience in the world of high-end oenology, 
-                        Riccardo has dedicated his career to researching and selecting the 
-                        most extraordinary wines in Italy. His philosophy is based on three 
-                        fundamental pillars: <strong>qualitative excellence</strong>, <strong>territorial authenticity</strong> 
-                        and <strong>accessibility for all enthusiasts</strong>.
-                    </p>
-                    <p style="color: #8b2635; font-style: italic;">
-                        "I created this collection to democratize access to great wines, 
-                        allowing anyone to live an unforgettable sensory experience."
-                    </p>
-                </div>
-            </div>
-        </div>
+
         
-        <!-- Collaboration Card -->
-        <div class="card-container">
-            <div class="logo-background">
-                <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
-            </div>
-            <div class="collaboration-section">
-                <h2>Collaboration with the Best Italian Winemakers</h2>
-                <p style="text-align: center; font-size: 1.1em; color: #2c1e1d; margin-bottom: 30px;">
-                    This collection is the result of direct collaboration with the most 
-                    prestigious Italian producers, selected for their dedication 
-                    to excellence and respect for winemaking traditions.
-                </p>
-                
-                <div class="winemakers-grid">
-                    <div class="winemaker-card">
-                        <h4>🍇 Tuscany</h4>
-                        <p>Collaboration with historic wineries of Chianti Classico and Brunello di Montalcino</p>
-                    </div>
-                    <div class="winemaker-card">
-                        <h4>🍷 Piedmont</h4>
-                        <p>Partnership with Barolo and Barbaresco producers from the Langhe</p>
-                    </div>
-                    <div class="winemaker-card">
-                        <h4>🌿 Veneto</h4>
-                        <p>Direct selection from Valpolicella and Amarone producers</p>
-                    </div>
-                    <div class="winemaker-card">
-                        <h4>🏔️ Alto Adige</h4>
-                        <p>Mountain wines from high altitude vineyards hand-selected</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Wine Selection Buttons -->
+        <!-- Featured Wines Section -->
         <div class="card-container">
             <div class="logo-background">
                 <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
@@ -510,7 +473,9 @@
                 
                 <div class="wine-buttons-container">
                     <a href="Tignanello.html" class="wine-button tignanello" onclick="alert('Opening Tignanello By Antinori 2019 - Technical Sheet')">
-                        <div class="wine-icon">🍷</div>
+                        <div class="wine-icon">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Red wine glass" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                        </div>
                         <div class="wine-details">
                             <h3>Tignanello</h3>
                             <p>By Antinori 2019</p>
@@ -519,7 +484,9 @@
                     </a>
                     
                     <a href="Dreams 2020.html" class="wine-button jermann" onclick="alert('Opening Jermann - Dreams 2020 - Technical Sheet')">
-                        <div class="wine-icon">🥂</div>
+                        <div class="wine-icon">
+                            <img src="https://images.unsplash.com/photo-1547595628-c61a29f496f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="White wine glass" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                        </div>
                         <div class="wine-details">
                             <h3>Dreams</h3>
                             <p>Jermann 2020</p>
@@ -533,12 +500,74 @@
                 </p>
             </div>
         </div>
+        
+        <!-- Super Premium Collection Card -->
+        <div class="card-container">
+            <div class="logo-background">
+                <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
+            </div>
+            <div class="collaboration-section">
+                <h2>Super Premium Collection</h2>
+                <p style="text-align: center; font-size: 1.1em; color: #2c1e1d; margin-bottom: 30px;">
+                    This collection is the result of direct collaboration with the most 
+                    prestigious Italian producers, selected for their dedication 
+                    to excellence and respect for winemaking traditions.
+                </p>
+                
+                <div class="winemakers-grid">
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Coat_of_arms_of_Tuscany.svg/200px-Coat_of_arms_of_Tuscany.svg.png" alt="Toscana Coat of Arms">
+                        </div>
+                        <h4>Toscana</h4>
+                        <p>Collaboration with historic wineries of Chianti Classico, Brunello di Montalcino, Bolgheri & elevated SuperTuscan producers</p>
+                    </div>
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Coat_of_arms_of_Piedmont.svg/200px-Coat_of_arms_of_Piedmont.svg.png" alt="Piemonte Coat of Arms">
+                        </div>
+                        <h4>Piemonte</h4>
+                        <p>Partnership with Barolo and Barbaresco producers from the Langhe as well as curated producers from Monferrato, Colli Totonesi & Colline Novarese</p>
+                    </div>
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Coat_of_arms_of_Veneto.svg/200px-Coat_of_arms_of_Veneto.svg.png" alt="Veneto Coat of Arms">
+                        </div>
+                        <h4>Veneto</h4>
+                        <p>Direct selection from Valpolicella and Amarone producers as well as the finest producers from Soave, Garda, Valdobbiadene, & Piave</p>
+                    </div>
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Coat_of_arms_of_Campania.svg/200px-Coat_of_arms_of_Campania.svg.png" alt="Campania Coat of Arms">
+                        </div>
+                        <h4>Campania</h4>
+                        <p>Historic wineries and experiences from the Amalfi Coast, Tufo, Taurasi, Sannio, Avellino, Cilento, and more</p>
+                    </div>
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Coat_of_arms_of_Sicily.svg/200px-Coat_of_arms_of_Sicily.svg.png" alt="Sicilia Coat of Arms">
+                        </div>
+                        <h4>Sicilia</h4>
+                        <p>Terroir driven experiences from the volcanic minerality of Etna to the Sun drenched heat and ripe fruit of Pantelleria to the magic of the Aeolian islands</p>
+                    </div>
+                    <div class="winemaker-card">
+                        <div class="region-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coat_of_arms_of_South_Tyrol.svg/200px-Coat_of_arms_of_South_Tyrol.svg.png" alt="Alto Adige Coat of Arms">
+                        </div>
+                        <h4>Alto Adige</h4>
+                        <p>Alpine experiences from the Dolomite high altitude vineyards, Pinot Nero from the Poetic Mazzon, Gewurtz from Tramin, Kerner from Valle Isarco & more</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Selection Highlights -->
         <div class="card-container">
             <div class="logo-background">
                 <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
             </div>
             <div class="wine-selection">
-                <h2>The Super Premium Selection</h2>
+                <h2>The Riccardo's Wine Cellar Experience</h2>
                 <p style="font-size: 1.1em; color: #2c1e1d; margin-bottom: 30px;">
                     Every wine in this collection has been personally selected by Riccardo 
                     to offer a unique and accessible sensory experience.
@@ -565,20 +594,29 @@
             </div>
         </div>
         
-        <!-- Call to Action Card -->
+        
+        <!-- Wine Director Card -->
         <div class="card-container">
-            <div class="cta-section">
-                <h2 style="margin-top: 0; color: #e6d1a8;">Begin Your Journey into the World of Great Wines</h2>
-                <p style="font-size: 1.1em; margin-bottom: 30px;">
-                    Discover the complete collection and let yourself be guided by the personalized 
-                    tasting notes from our Wine Director.
-                </p>
-                <a href="#" class="cta-button" onclick="alert('Link to complete collection - to be implemented')">
-                    Explore the Collection
-                </a>
-                <p style="font-size: 0.9em; margin-top: 20px; opacity: 0.8;">
-                    Limited availability - Only for true enthusiasts
-                </p>
+            <div class="logo-background">
+                <img src="https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1200,height=672,format=auto/https://doordash-static.s3.amazonaws.com/media/restaurant/cover/GranCaffeLAquila1716PhiladelphiaPA.png" alt="Wine logo" onerror="this.style.display='none'">
+            </div>
+            <div class="wine-director-section">
+                <div class="director-image">
+                    <div class="director-placeholder">RL</div>
+                </div>
+                <div class="director-info">
+                    <h2>Riccardo Longo</h2>
+                    <h3>Wine Director & Sommelier</h3>
+                    <p>
+                        A Native of Rome, Riccardo spent the summers of his childhood in the Cilento where his Nonno taught him about viticulture on his vineyard. Over the past three decades he has personally visited and met with esteemed winemakers in all 20 regions of Italy. His mission, with our wine list, is to offer wines that tell the story of the subzone terroirs of all 20 regions of Italy.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Riccardo's Wine Cellar Selections allows guests to sample Elevated Italian terroir wines by the glass at a special price through special arrangements with the winemakers.
+                    </p>
+                    <p style="color: #8b2635; font-style: italic; font-size: 0.95em;">
+                        <strong>Riccardo's accolades include:</strong> "Eccelenze Italiane" for promotion of Italian culture abroad, America Italy Society "Italian Culture Award", Wine Spectator "Award of Excellence", Filitalia Humanitarian Award for service to the Italian community.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -588,7 +626,7 @@
     </div>
     
     <footer>
-        <p>&copy; 2025 Exclusive Collection Riccardo Longo - Drinking responsibly is a pleasure that lasts over time</p>
+        <p>&copy; 2025 Riccardo's Wine Cellar Selections - Drinking responsibly is a pleasure that lasts over time</p>
     </footer>
 </body>
 </html>
