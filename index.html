@@ -334,8 +334,41 @@
             border-color: #5e1914;
         }
         
-        .wine-button.tignanello:hover {
-            background: linear-gradient(135deg, #fff8f0 0%, #f9f7f3 100%);
+        /* Tignanello button with Tuscan vineyard background */
+        .wine-button.tignanello {
+            background-image: url('Tuscan Vineyard and Wine Glass+GCA.ai');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .wine-button.tignanello::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.85) 0%, 
+                rgba(249,247,243,0.8) 50%, 
+                rgba(255,255,255,0.85) 100%);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .wine-button.tignanello:hover::after {
+            background: linear-gradient(135deg, 
+                rgba(255,248,240,0.75) 0%, 
+                rgba(249,247,243,0.7) 50%, 
+                rgba(255,248,240,0.75) 100%);
+        }
+        
+        .wine-button.tignanello .wine-icon,
+        .wine-button.tignanello .wine-details {
+            position: relative;
+            z-index: 2;
         }
         
         .wine-button.jermann:hover {
@@ -472,7 +505,7 @@
                 
                 <div class="wine-buttons-container">
                     <a href="Tignanello.html" class="wine-button tignanello" onclick="alert('Opening Tignanello By Antinori 2019 - Technical Sheet')">
-                        <div class="wine-icon"></div>
+                        <div class="wine-icon">🍷</div>
                         <div class="wine-details">
                             <h3>Tignanello</h3>
                             <p>By Antinori 2019</p>
@@ -481,7 +514,7 @@
                     </a>
                     
                     <a href="Dreams 2020.html" class="wine-button jermann" onclick="alert('Opening Jermann - Dreams 2020 - Technical Sheet')">
-                        <div class="wine-icon"></div>
+                        <div class="wine-icon">🥂</div>
                         <div class="wine-details">
                             <h3>Dreams</h3>
                             <p>Jermann 2020</p>
