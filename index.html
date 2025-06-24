@@ -336,7 +336,7 @@
         
         /* Tignanello button with Tuscan vineyard background */
         .wine-button.tignanello {
-            background-image: url('Tuscan Vineyard and Wine Glass+GCA.ai');
+            background-image: url('Tuscan Vineyard and Wine Glass+GCA.svg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -365,20 +365,62 @@
                 rgba(255,248,240,0.75) 100%);
         }
         
+        /* Dreams button with Dreams glass background */
+        .wine-button.jermann {
+            background-image: url('Dreams Glass+logoGCA.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .wine-button.jermann::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(240,248,255,0.85) 0%, 
+                rgba(249,247,243,0.8) 50%, 
+                rgba(240,248,255,0.85) 100%);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .wine-button.jermann:hover::after {
+            background: linear-gradient(135deg, 
+                rgba(240,248,255,0.75) 0%, 
+                rgba(249,247,243,0.7) 50%, 
+                rgba(240,248,255,0.75) 100%);
+        }
+        
         .wine-button.tignanello .wine-icon,
-        .wine-button.tignanello .wine-details {
+        .wine-button.tignanello .wine-details,
+        .wine-button.jermann .wine-icon,
+        .wine-button.jermann .wine-details {
             position: relative;
             z-index: 2;
         }
         
-        .wine-button.jermann:hover {
-            background: linear-gradient(135deg, #f0f8ff 0%, #f9f7f3 100%);
-        }
-        
         .wine-icon {
-            font-size: 3em;
+            width: 80px;
+            height: 80px;
             margin-right: 20px;
             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        
+        .wine-icon.tignanello-icon {
+            background-image: url('Tuscan Vineyard and Wine Glass+GCA.svg');
+        }
+        
+        .wine-icon.dreams-icon {
+            background-image: url('Dreams Glass+logoGCA.svg');
         }
         
         .wine-details h3 {
@@ -505,7 +547,7 @@
                 
                 <div class="wine-buttons-container">
                     <a href="Tignanello.html" class="wine-button tignanello" onclick="alert('Opening Tignanello By Antinori 2019 - Technical Sheet')">
-                        <div class="wine-icon">🍷</div>
+                        <div class="wine-icon tignanello-icon"></div>
                         <div class="wine-details">
                             <h3>Tignanello</h3>
                             <p>By Antinori 2019</p>
@@ -514,7 +556,7 @@
                     </a>
                     
                     <a href="Dreams 2020.html" class="wine-button jermann" onclick="alert('Opening Jermann - Dreams 2020 - Technical Sheet')">
-                        <div class="wine-icon">🥂</div>
+                        <div class="wine-icon dreams-icon"></div>
                         <div class="wine-details">
                             <h3>Dreams</h3>
                             <p>Jermann 2020</p>
